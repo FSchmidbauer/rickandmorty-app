@@ -22,43 +22,15 @@ export default function App() {
     }
   };
 
-  // function showHome() {
-  //   characters.map((character) => {
-  //     return (
-  //       <Character>
-  //         <CharacterImage
-  //           src={character.image}
-  //           width="200"
-  //           alt={character.name}
-  //         ></CharacterImage>
-  //         <h3>{character.name}</h3>
-  //         <RenderedGurke
-  //           width="60"
-  //           src={Gurke}
-  //           isClicked="false"
-  //           onClick={() => placeIntoBookmarked(character)}
-  //         ></RenderedGurke>
-  //       </Character>
-  //     );
-  //   });
-  // }
+ 
 
-  function showBookmarked() {}
+  
 
   const [characters, setCharacters] = useState([]);
   const [onlyAliens, setOnlyAliens] = useState([]);
   const [viewOnlyAliens, setViewOnlyAliens] = useState(false);
 
   const [bookmarkedChars, setBookmarkedChars] = useState([]);
-
-  // function showAllCharacters() {
-  //   const completeChars = characters.slice(characters);
-  //   setAllChars([...allChars, completeChars]);
-  // }
-
-  function Home() {
-    return <h2>Get schwifty!</h2>;
-  }
 
   function placeIntoBookmarked(currywurst) {
     const characterToAdd = characters.find(
@@ -67,41 +39,34 @@ export default function App() {
     setBookmarkedChars([...bookmarkedChars, characterToAdd]);
   }
 
+  function Home() {
+    return (
+<>
+     <Headline>Get schwifty!</Headline>
+     <Filterbuttons>
+     <button onClick={showAllCharacters}>Show all characters</button>
+     <button onClick={showOnlyAliens}>Show only aliens</button>
+   </Filterbuttons>
+   <MainSection>
+     {charactersOnScreen(viewOnlyAliens ? onlyAliens : characters)}
+     
+   </MainSection>
+  </> )}
+
+
+
   function showOnlyAliens() {
     setViewOnlyAliens(true);
     const Aliens = characters.filter(
       (character) => character.species === "Alien"
     );
     setOnlyAliens([...Aliens]);
-    // return (
-    //   <OnlyHumanSection>
-    //     <Character>
-    //       <CharacterImage
-    //         src={character.image}
-    //         width="200"
-    //         alt={character.name}
-    //       ></CharacterImage>
-    //       <h3>{character.name}</h3>
-    //       <RenderedGurke
-    //         width="60"
-    //         src={Gurke}
-    //         isClicked="false" //arrow-function, weil wir mehr als click-events mitgeben wollen
-    //       ></RenderedGurke>
-    //     </Character>
-    //   </OnlyHumanSection>
-    // );
-    // const newHuman = characters.filter(
-    //   (character) => character.species === "Human"
-    // );
-    // setOnlyHumans([...onlyHumans, newHuman]);
+    
   }
 
   function showAllCharacters() {
     setViewOnlyAliens(false);
-    // const newHuman = characters.filter(
-    //   (character) => character.species === "Human"
-    // );
-    // setOnlyHumans([...onlyHumans, newHuman]);
+    
   }
 
   function charactersOnScreen(card) {
@@ -117,34 +82,36 @@ export default function App() {
           <RenderedGurke
             width="60"
             src={Gurke}
-            isClicked="false"
+            onClick={() => changeColor()}
             onClick={() => placeIntoBookmarked(character)} //arrow-function, weil wir mehr als click-events mitgeben wollen
           ></RenderedGurke>
         </Character>
       </CharacterSection>
     ));
   }
+ 
+    function changeColor(RenderedGurke) {
+      
+    }
 
   return (
     <>
       <Router>
         <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/bookmarked">Bookmarked</Link>
-              </li>
-            </ul>
-          </nav>
+          <Headermenu>
+           <p>
+                <Link to="/" style={{ textDecoration: 'none' }}>Home</Link>
+              </p>
+              <p>
+                <Link to="/bookmarked" style={{ textDecoration: 'none' }}>Bookmarked</Link>
+              </p>
+           </Headermenu>
 
           {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/bookmarked">
-              <Bookmarked />
+              <Bookmarked bookmarkedChars={bookmarkedChars}/>
             </Route>
             <Route path="/">
               <Home />
@@ -152,72 +119,7 @@ export default function App() {
           </Switch>
         </div>
       </Router>
-      <Filterbuttons>
-        <button onClick={showAllCharacters}>Show all characters</button>
-        <button onClick={showOnlyAliens}>Show only aliens</button>
-      </Filterbuttons>
-      <MainSection>
-        {charactersOnScreen(viewOnlyAliens ? onlyAliens : characters)}
-        {/* <CharacterSection>
-          {characters.map((character) => {
-            //character ist der gleiche wie Zeile 116
-            return (
-              <Character key={character.id}>
-                <CharacterImage
-                  src={character.image}
-                  width="200"
-                  alt={character.name}
-                ></CharacterImage>
-                <h3>{character.name}</h3>
-                <RenderedGurke
-                  width="60"
-                  src={Gurke}
-                  isClicked="false"
-                  onClick={() => placeIntoBookmarked(character)} //arrow-function, weil wir mehr als click-events mitgeben wollen
-                ></RenderedGurke>
-              </Character>
-            );
-          })}
-        </CharacterSection>
-        <OnlyHumanSection>
-          {onlyHumans.map((character) => {
-            return (
-              <Character>
-                <CharacterImage
-                  src={character.image}
-                  width="200"
-                  alt={character.name}
-                ></CharacterImage>
-                <h3>{character.name}</h3>
-                <RenderedGurke
-                  width="60"
-                  src={Gurke}
-                  isClicked="false" //arrow-function, weil wir mehr als click-events mitgeben wollen
-                ></RenderedGurke>
-              </Character>
-            );
-          })}
-        </OnlyHumanSection>
-        <BookmarkedCharSection>
-          {bookmarkedChars.map((character) => {
-            return (
-              <Character>
-                <CharacterImage
-                  src={character.image}
-                  width="200"
-                  alt={character.name}
-                ></CharacterImage>
-                <h3>{character.name}</h3>
-                <RenderedGurke
-                  width="60"
-                  src={Gurke}
-                  isClicked="false" //arrow-function, weil wir mehr als click-events mitgeben wollen
-                ></RenderedGurke>
-              </Character>
-            );
-          })}
-        </BookmarkedCharSection> */}
-      </MainSection>
+     
       <footer>
         <Footermenu>
           <p>© by Vika Brandes, Farah Mansour, Florian Schmidbauer</p>
@@ -240,6 +142,7 @@ const Headermenu = styled.div`
     color: ivory;
     padding: 0 1rem;
     cursor: pointer;
+    text-decoration: none;
   }
 `;
 
@@ -331,11 +234,13 @@ const RenderedGurke = styled.img`
   z-index: 10;
   left: 10rem;
   top: -2rem;
-  opacity: 50%;
+  opacity: ${(props) => (props.isClicked ? 100% : 50%)};
   :hover {
     transform: scale(1.5);
   }
-  :active {
-    opacity: 100%;
-  }
+ 
 `;
+
+const Headline = styled.h2`
+text-align: center;
+`

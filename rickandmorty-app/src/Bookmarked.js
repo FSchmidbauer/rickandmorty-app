@@ -2,10 +2,14 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import Gurke from "./gurke.png";
 import PropTypes from "prop-types";
+import App from "./App.js";
 
-export default function Bookmarked() {
-  const [bookmarkedChars, setBookmarkedChars] = useState([]);
+export default function Bookmarked({bookmarkedChars}) {
+  
+ 
   return (
+   
+  <>
     <BookmarkedCharSection>
       {bookmarkedChars.map((character) => {
         return (
@@ -14,17 +18,18 @@ export default function Bookmarked() {
               src={character.image}
               width="200"
               alt={character.name}
-            ></CharacterImage>
+              ></CharacterImage>
             <h3>{character.name}</h3>
             <RenderedGurke
               width="60"
               src={Gurke}
               isClicked="false" //arrow-function, weil wir mehr als click-events mitgeben wollen
-            ></RenderedGurke>
+              ></RenderedGurke>
           </Character>
         );
       })}
     </BookmarkedCharSection>
+      </>
   );
 }
 
