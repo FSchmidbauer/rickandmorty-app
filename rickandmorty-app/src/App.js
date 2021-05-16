@@ -5,6 +5,8 @@ import styled from "styled-components";
 import Gurke from "./gurke.png";
 import PropTypes from "prop-types";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import useSound from 'use-sound';
+import Getschwifty from './getschwifty.mp3';
 
 export default function App() {
   useEffect(() => {
@@ -46,7 +48,7 @@ export default function App() {
   function Home() {
     return (
 <>
-     <Headline>Get schwifty!</Headline>
+     <Headline><SchwiftyButton/></Headline>
      <Filterbuttons>
      <button onClick={showAllCharacters}>Show all characters</button>
      <button onClick={showOnlyAliens}>Show only aliens</button>
@@ -57,6 +59,10 @@ export default function App() {
    </MainSection>
   </> )}
 
+ const SchwiftyButton = () => {
+    const [play] = useSound(Getschwifty);
+    return <button onClick={play}>Get Schwifty!</button>;
+  };
 
 
   function showOnlyAliens() {
@@ -95,6 +101,8 @@ export default function App() {
       </CharacterSection>
     ));
   }
+
+ 
  
 //   function myFunction(element, color) {
 // element.style.color = color; element.style.setProperty("text-decoration", "line-through");
@@ -137,6 +145,14 @@ export default function App() {
     </>
   );
 }
+
+// Flo, Hilfe! -Farah
+const SchwiftyButton = styled.button`
+border: none;
+background-color: gold;
+cursor: pointer;
+padding: 0.2rem;
+`
 
 const Headermenu = styled.div`
   display: flex;
