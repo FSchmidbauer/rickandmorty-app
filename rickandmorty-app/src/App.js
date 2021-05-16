@@ -36,8 +36,12 @@ export default function App() {
     const characterToAdd = characters.find(
       (character) => character.name === currywurst.name
     );
+    RenderedGurke.isClicked = !RenderedGurke.isClicked;
     setBookmarkedChars([...bookmarkedChars, characterToAdd]);
+    
   }
+
+
 
   function Home() {
     return (
@@ -82,14 +86,19 @@ export default function App() {
           <RenderedGurke
             width="60"
             src={Gurke}
-            onClick={() => changeColor()}
-            onClick={() => placeIntoBookmarked(character)} //arrow-function, weil wir mehr als click-events mitgeben wollen
+            isClicked={false}
+            onClick={() => placeIntoBookmarked(character)} 
+            // onClick={() => myFunction(this, 'green')}
+            //arrow-function, weil wir mehr als click-events mitgeben wollen
           ></RenderedGurke>
         </Character>
       </CharacterSection>
     ));
   }
  
+//   function myFunction(element, color) {
+// element.style.color = color; element.style.setProperty("text-decoration", "line-through");
+// } 
     function changeColor(RenderedGurke) {
       
     }
@@ -100,10 +109,10 @@ export default function App() {
         <div>
           <Headermenu>
            <p>
-                <Link to="/" style={{ textDecoration: 'none' }}>Home</Link>
+                <Link to="/" style={{ textDecoration: 'none', color: 'ivory' }}>Home</Link>
               </p>
               <p>
-                <Link to="/bookmarked" style={{ textDecoration: 'none' }}>Bookmarked</Link>
+                <Link to="/bookmarked" style={{ textDecoration: 'none', color: 'ivory' }}>Bookmarked</Link>
               </p>
            </Headermenu>
 
@@ -133,9 +142,7 @@ const Headermenu = styled.div`
   display: flex;
   background: #8bcf21;
   justify-content: center;
-  margin: 1rem 0;
   opacity: 70%;
-  border: 0.2rem solid black;
   p {
     font-size: 1.5rem;
     font-weight: bold;
@@ -153,13 +160,14 @@ const Filterbuttons = styled.div`
 
   button {
     background: green;
-    border: 0.2rem solid black;
-    color: white;
+    border: 0.1rem solid black;
+    color: ivory;
     border-radius: 2rem;
     cursor: pointer;
     font-weight: bold;
     padding: 1.5rem;
     margin: 1rem;
+    opacity: 70%;
     :hover {
       transform: scale(1.2);
     }
@@ -190,15 +198,6 @@ const MainSection = styled.div`
   grid-template-columns: repeat(4, 1fr);
 `;
 
-const BookmarkedCharSection = styled.section`
-  background-color: skyblue;
-  text-align: center;
-  padding: 3rem;
-  margin: 0 auto;
-  width: 32rem;
-  position: relative;
-  max-width: 32rem;
-`;
 
 const OnlyHumanSection = styled.section`
   background-color: red;
@@ -234,7 +233,7 @@ const RenderedGurke = styled.img`
   z-index: 10;
   left: 10rem;
   top: -2rem;
-  opacity: ${(props) => (props.isClicked ? 100% : 50%)};
+  opacity: ${props => props.isClicked ? "100%" : "50%"};
   :hover {
     transform: scale(1.5);
   }

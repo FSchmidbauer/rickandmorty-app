@@ -10,6 +10,7 @@ export default function Bookmarked({bookmarkedChars}) {
   return (
    
   <>
+  <MainSection>
     <BookmarkedCharSection>
       {bookmarkedChars.map((character) => {
         return (
@@ -29,16 +30,21 @@ export default function Bookmarked({bookmarkedChars}) {
         );
       })}
     </BookmarkedCharSection>
+    </MainSection>
       </>
   );
 }
 
+
+const MainSection = styled.div`
+  display: grid;
+  margin-top: 1.75rem;
+`;
+
 const BookmarkedCharSection = styled.section`
-  background-color: skyblue;
   text-align: center;
-  padding: 3rem;
+  padding: 1rem;
   margin: 0 auto;
-  width: 32rem;
   position: relative;
   max-width: 32rem;
 `;
@@ -58,7 +64,7 @@ const RenderedGurke = styled.img`
   cursor: pointer;
   z-index: 10;
   left: 10rem;
-  top: -2rem;
+  top: -2.5rem;
   opacity: 50%;
   :hover {
     transform: scale(1.5);
