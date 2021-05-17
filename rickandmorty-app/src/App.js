@@ -85,7 +85,7 @@ export default function App() {
           <RenderedGurke
             width="60"
             src={Gurke}
-            isClicked={false}
+            isClicked={bookmarkedChars.some((bookmarkedChar) => bookmarkedChar.name === character.name)}
             onClick={() => placeIntoBookmarked(character)}
             // onClick={() => myFunction(this, 'green')}
             //arrow-function, weil wir mehr als click-events mitgeben wollen
@@ -240,7 +240,7 @@ const RenderedGurke = styled.img`
   z-index: 10;
   left: 10rem;
   top: -2rem;
-  opacity: ${(props) => (props.isClicked ? "100%" : "50%")};
+  opacity: ${(props) => (props.isClicked ? "1" : "0.5")};
   :hover {
     transform: scale(1.5);
   }
