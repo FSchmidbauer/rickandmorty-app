@@ -16,8 +16,8 @@ export default function App() {
   const fetchData = async (url) => {
     const res = await fetch(url);
     const data = await res.json();
-    setCharacters((_characters) => {
-      return [..._characters, ...data.results];
+    setCharacters((characters) => {
+      return [...characters, ...data.results];
     });
     if (data.info && data.info.next) {
       fetchData(data.info.next);
@@ -27,16 +27,51 @@ export default function App() {
   const [characters, setCharacters] = useState([]);
   const [onlyAliens, setOnlyAliens] = useState([]);
   const [viewOnlyAliens, setViewOnlyAliens] = useState(false);
+  const [bookmarkedChars, setBookmarkedChars] = useState(loadFromLocalStorage('favorites') ?? []);
 
-  const [bookmarkedChars, setBookmarkedChars] = useState([]);
+  useEffect(() => {saveToLocalStorage ('favorites', bookmarkedChars)
+  }, [bookmarkedChars]) // bei jeder Änderung des [bookmarkedChars] wird die Funktion ausgeführt
+
 
   function placeIntoBookmarked(currywurst) {
+    const updatedCharacters = characters.filter(
+      (character) => character.name !== currywurst.name
+    );
     const characterToAdd = characters.find(
       (character) => character.name === currywurst.name
     );
     RenderedGurke.isClicked = !RenderedGurke.isClicked;
     setBookmarkedChars([...bookmarkedChars, characterToAdd]);
+    setCharacters(updatedCharacters);
+    saveToLocalStorage('favorites', bookmarkedChars);
   }
+
+
+  function removeFromBookmarked(currywurst) {
+    const remainingChars = bookmarkedChars.filter(
+      (bookmarkedChar) => bookmarkedChar.name !== currywurst.name
+    );
+    const returnedChar = bookmarkedChars.find(
+      (bookmarkedChar) => bookmarkedChar.name === currywurst.name
+    );
+    RenderedGurke.isClicked = !RenderedGurke.isClicked;
+    setBookmarkedChars(remainingChars);
+    setCharacters([returnedChar,...characters])
+  }
+
+  
+  function saveToLocalStorage(key, data) {
+    localStorage.setItem(key, JSON.stringify(data))
+    }
+     
+  function loadFromLocalStorage(key) {
+      try {
+        const localData = localStorage.getItem(key);
+        return JSON.parse(localData);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
   function Home() {
     return (
@@ -87,7 +122,6 @@ export default function App() {
             src={Gurke}
             isClicked={bookmarkedChars.some((bookmarkedChar) => bookmarkedChar.name === character.name)}
             onClick={() => placeIntoBookmarked(character)}
-            // onClick={() => myFunction(this, 'green')}
             //arrow-function, weil wir mehr als click-events mitgeben wollen
           ></RenderedGurke>
         </Character>
@@ -124,7 +158,7 @@ export default function App() {
             renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/bookmarked">
-              <Bookmarked bookmarkedChars={bookmarkedChars} />
+              <Bookmarked bookmarkedChars={bookmarkedChars} onRemoveFromBookmarked={removeFromBookmarked}/>
             </Route>
             <Route path="/">
               <Home />

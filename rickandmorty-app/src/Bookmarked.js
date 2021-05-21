@@ -3,10 +3,12 @@ import styled from "styled-components";
 import Gurke from "./gurke.png";
 import PropTypes from "prop-types";
 import App from "./App.js";
+import removeFromBookmarked from "./App";
 
-export default function Bookmarked({bookmarkedChars}) {
-  
+export default function Bookmarked({bookmarkedChars, onRemoveFromBookmarked}) {
  
+
+
   return (
    
   <>
@@ -24,7 +26,8 @@ export default function Bookmarked({bookmarkedChars}) {
             <RenderedGurke
               width="60"
               src={Gurke}
-              isClicked="false" //arrow-function, weil wir mehr als click-events mitgeben wollen
+              isClicked={bookmarkedChars.some((bookmarkedChar) => bookmarkedChar.name === character.name)} //arrow-function, weil wir mehr als click-events mitgeben wollen
+              onClick={() => onRemoveFromBookmarked(character)}
               ></RenderedGurke>
           </Character>
         );
@@ -65,11 +68,8 @@ const RenderedGurke = styled.img`
   z-index: 10;
   left: 10rem;
   top: -2.5rem;
-  opacity: 50%;
+  opacity: ${(props) => (props.isClicked ? "1" : "0.5")};
   :hover {
     transform: scale(1.5);
-  }
-  :active {
-    opacity: 100%;
   }
 `;
