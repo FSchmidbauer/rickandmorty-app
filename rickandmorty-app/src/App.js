@@ -59,6 +59,7 @@ export default function App() {
     setCharacters([returnedChar,...characters])
   }
 
+
   
   function saveToLocalStorage(key, data) {
     localStorage.setItem(key, JSON.stringify(data))
@@ -83,6 +84,7 @@ export default function App() {
           <button onClick={showAllCharacters}>Show all characters</button>
           <button onClick={showOnlyAliens}>Show only aliens</button>
         </Filterbuttons>
+        <Search onFilterByName={onFilterByName} />
         <MainSection>
           {charactersOnScreen(viewOnlyAliens ? onlyAliens : characters)}
         </MainSection>
@@ -105,6 +107,27 @@ export default function App() {
 
   function showAllCharacters() {
     setViewOnlyAliens(false);
+  }
+
+  function onFilterByName(event) {
+    const inputField = event.target;
+    const searchTerm = inputField.value;
+    const filteredCharacters = characters.filter((character) => {
+      return (
+        character.name.toLowerCase().includes(searchTerm.toLowerCase())
+       )
+      }
+    )
+  }
+  
+  function Search({ onFilterByName }) {
+    return (
+      <SearchboxInput
+        onChange={onFilterByName}
+        type="text"
+        placeholder="search here ..."
+      />
+    );
   }
 
   function charactersOnScreen(card) {
@@ -175,6 +198,19 @@ export default function App() {
     </>
   );
 }
+
+
+
+const SearchboxInput = styled.input`
+  display: block;
+  margin: 1rem auto 0.8rem;
+  width: 30%;
+  min-width: 300px;
+`;
+
+// Search.propTypes = {
+//   onFilterByName: PropTypes.func,
+// };
 
 const SchwiftyButton = styled.button`
   border: none;
